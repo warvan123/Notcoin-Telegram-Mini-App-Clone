@@ -1,4 +1,3 @@
-/* App.css */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -15,7 +14,7 @@ body, html {
   position: fixed;
 }
 
-.main-container {
+.game-container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -28,49 +27,52 @@ body, html {
 .score-box {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-.score-coin { width: 40px; height: 40px; }
-.score-val { font-size: 3rem; font-weight: 800; color: white; }
-.rank-tag { color: white; font-weight: bold; margin-top: 5px; text-align: center;}
+.mini-coin { width: 45px; height: 45px; }
+.main-score { font-size: 3.5rem; font-weight: 900; color: white; margin: 0; }
+.rank { color: white; font-weight: bold; font-size: 1.2rem; }
 
-.click-area {
+.coin-area {
   position: relative;
   flex: 1;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  touch-action: none;
 }
 
-.big-coin {
+.the-coin {
   width: 280px;
   cursor: pointer;
   transition: transform 0.05s;
 }
 
-.big-coin:active {
-  transform: scale(0.92);
+.the-coin:active {
+  transform: scale(0.95);
 }
 
-.plus-one {
-  position: fixed; /* ئەڤە وادکەت وێنە تێک نەچیت */
+/* ئەڤە ناهێلیت وێنە بجوولیت چونکی Absolute ئە */
+.tap-effect {
+  position: fixed;
   color: white;
-  font-size: 32px;
+  font-size: 35px;
   font-weight: bold;
   pointer-events: none;
-  animation: floatUp 0.7s ease-out forwards;
+  z-index: 100;
+  animation: fadeUp 0.6s ease-out forwards;
 }
 
-@keyframes floatUp {
+@keyframes fadeUp {
   0% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -150px); }
 }
 
-.bottom-ui { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-.stats { color: white; font-weight: bold; }
-.progress-bar { width: 90%; height: 12px; background: rgba(255,255,255,0.3); border-radius: 10px; }
-.progress-fill { height: 100%; background: white; border-radius: 10px; }
-.action-btns { display: flex; gap: 20px; }
-.btn { background: rgba(255,255,255,0.2); border: none; padding: 10px 20px; border-radius: 12px; color: white; font-weight: bold; }
+.footer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.energy-info { color: white; font-weight: bold; font-size: 1.1rem; }
+.progress-container { width: 85%; height: 14px; background: rgba(255,255,255,0.3); border-radius: 20px; }
+.progress-bar { height: 100%; background: white; border-radius: 20px; }
+.menu { display: flex; gap: 15px; margin-top: 10px; }
+.menu-btn { background: rgba(0,0,0,0.15); border: none; padding: 12px 25px; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; }
