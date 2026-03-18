@@ -1,65 +1,62 @@
-/* --- App.css --- */
+/* --- App.css (ب زارۆکێ بادینی) --- */
 
-/* ڕێکخستنی سەرەکی بۆ ئەوەی هیچ شتێک نەجوڵێت */
+/* ئەڤە وادکەت کو هەمی تشت جێگیر بن و لاپەڕە نە لڤیت */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* ناهێلیت پەیج لایێ چەپ و ڕاست یان سەری و خوار بچیت */
+  touch-action: none; /* گەلەک گرنگە بۆ مۆبایلێ دا چ زووم چێنەبن */
+  background-color: #f3ba2f; /* ڕەنگێ زەرد یێ وێنەی */
+}
+
 .App {
-  position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f3ba2f; /* ئەو ڕەنگە زەردەی لە وێنەکەدا هەیە */
-  user-select: none;
+  justify-content: center;
+  position: relative;
+  user-select: none; /* ناهێلیت نڤیسین شین ببن کاتێ تو کلیک دکەی */
   -webkit-tap-highlight-color: transparent;
 }
 
-/* شوێنی کۆینەکە جێگیر بکە */
-.coin-wrapper {
+/* جهێ وێنەیێ کوینێ */
+.coin-container {
   position: relative;
-  margin-top: 100px; /* بەپێی ویست بیگۆڕە */
-  z-index: 2;
+  z-index: 5;
 }
 
 .coin-image {
-  width: 250px; /* قەبارەی کۆینەکە */
-  height: auto;
-  pointer-events: auto;
+  width: 280px;
   cursor: pointer;
-  transition: transform 0.1s active;
+  /* ئەڤە وادکەت دەمێ دەست لێ ددەی تەنێ کێمەکێ بچیک بیت بێی کو بجوولیت */
+  transition: transform 0.1s ease;
 }
 
 .coin-image:active {
-  transform: scale(0.95); /* تەنها کەمێک بچووک دەبێتەوە بێ ئەوەی بجوڵێت */
+  transform: scale(0.95);
 }
 
-/* --- چارەسەری کێشەی +1 --- */
-/* ئەم بەشە زۆر گرنگە بۆ ئەوەی +1 لاپەڕەکە تێکنەدات */
+/* --- چارەسەریا نڤیسینا +1 --- */
+/* ئەڤ بەشە ناهێلیت وێنە بچیتە سەری */
 .plus-one {
-  position: absolute; /* وادەکات دەقەکە سەربەخۆ بێت و هیچ شتێک پاڵ نەنێت */
+  position: absolute; /* ئەڤە کلیلا چارەسەریێ یە: ناهێلیت جهێ وێنەی تێک بدەت */
   color: white;
-  font-weight: bold;
   font-size: 24px;
-  pointer-events: none; /* وادەکات ڕێگری لە کلیک کردن نەکات */
-  animation: floatUp 1s ease-out forwards; /* ئەنیمەیشن بۆ سەرەوە */
-  z-index: 10;
+  font-weight: bold;
+  pointer-events: none; /* ناهێلیت کلیک ل سەر ڤێ نڤیسینێ ببن */
+  animation: moveUp 0.8s ease-out forwards;
 }
 
-/* ئەنیمەیشنی سەرکەوتنی ژمارەکان */
-@keyframes floatUp {
+/* ئەنیمەیشن بۆ وێ چەندێ +1 بەرەڤ سەری بچیت و بەرزە بیت */
+@keyframes moveUp {
   0% {
     opacity: 1;
     transform: translateY(0);
   }
   100% {
     opacity: 0;
-    transform: translateY(-100px); /* بەرەو سەرەوە دەڕوات و ون دەبێت */
+    transform: translateY(-150px);
   }
-}
-
-/* ستایلی ئەو بارەی خوارەوە (Progress Bar) */
-.progress-container {
-  position: absolute;
-  bottom: 100px;
-  width: 90%;
 }
