@@ -48,7 +48,6 @@ function App() {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (energy <= 0) return;
     
-    // ئەڤ پارچە دێ هێلیت ژمارە ڕێک د جهێ کلیکێ دا بلند ببن
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -86,8 +85,7 @@ function App() {
       </div>
 
       <div className="flex-grow flex items-center justify-center w-full relative">
-        {/* گرنگە کلاسا relative ل ڤێرە هەبیت بۆ هندێ ژمارە بەرزە نەبن */}
-        <div className="relative cursor-pointer" onClick={handleClick}>
+        <div className="relative cursor-pointer touch-none" onClick={handleClick}>
           <img src={onecoin} width={220} className="coin-animation select-none" alt="main" />
           {clicks.map(click => (
             <div
@@ -108,7 +106,7 @@ function App() {
         </button>
         <button 
           onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} 
-          className={`btn-shop ${isBoost ? 'bg-orange-500' : ''}`}
+          className={`btn-shop ${isBoost ? 'bg-orange-500 animate-pulse' : ''}`}
         >
           🚀 5X Boost
         </button>
