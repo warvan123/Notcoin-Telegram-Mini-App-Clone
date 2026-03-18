@@ -1,12 +1,15 @@
-/* --- App.css (ب زارۆکێ بادینی) --- */
+/* --- App.css (Full Fixed Version) --- */
 
-/* ئەڤە وادکەت کو هەمی تشت جێگیر بن و لاپەڕە نە لڤیت */
-body {
+/* 1. ڕێگری ل هەمی لڤینەکا پەیجی دکەت */
+html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden; /* ناهێلیت پەیج لایێ چەپ و ڕاست یان سەری و خوار بچیت */
-  touch-action: none; /* گەلەک گرنگە بۆ مۆبایلێ دا چ زووم چێنەبن */
-  background-color: #f3ba2f; /* ڕەنگێ زەرد یێ وێنەی */
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* ناهێلیت پەیج بەرەڤ سەری یان خوارێ بچیت */
+  position: fixed; /* پەیجی قفل دکەت */
+  touch-action: none; /* ناهێلیت مۆبایل زووم بکەت یان پەیجی ڕاکێشیت */
+  background-color: #f3ba2f; /* ڕەنگێ زەرد یێ یاریێ */
 }
 
 .App {
@@ -17,46 +20,62 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  user-select: none; /* ناهێلیت نڤیسین شین ببن کاتێ تو کلیک دکەی */
-  -webkit-tap-highlight-color: transparent;
+  /* ناهێلیت چو نڤیسین شین ببن (No Selection) */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* وادکەت چو چوارچێوە دۆر وێنەی چێنەبن */
 }
 
-/* جهێ وێنەیێ کوینێ */
+/* 2. وێنەیێ کوینێ (کۆین دێ ل ناڤەڕاستێ مینیت) */
 .coin-container {
   position: relative;
-  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
 .coin-image {
   width: 280px;
+  height: auto;
   cursor: pointer;
-  /* ئەڤە وادکەت دەمێ دەست لێ ددەی تەنێ کێمەکێ بچیک بیت بێی کو بجوولیت */
-  transition: transform 0.1s ease;
+  transition: transform 0.05s ease; /* وەڵامدانەوکا زۆر خێرا */
+  pointer-events: auto;
 }
 
+/* کاتێ دەستی لێ ددەی تەنێ کێمەکێ دچیتە خوار (Effect) */
 .coin-image:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
-/* --- چارەسەریا نڤیسینا +1 --- */
-/* ئەڤ بەشە ناهێلیت وێنە بچیتە سەری */
+/* 3. چارەسەریا نڤیسینا +1 (ناهێلیت وێنەی پاڵ بدەت) */
 .plus-one {
-  position: absolute; /* ئەڤە کلیلا چارەسەریێ یە: ناهێلیت جهێ وێنەی تێک بدەت */
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  pointer-events: none; /* ناهێلیت کلیک ل سەر ڤێ نڤیسینێ ببن */
-  animation: moveUp 0.8s ease-out forwards;
+  position: absolute; /* ئەڤە کلیلا سەرکەفتنێ یە! نڤیسینێ ژ "لیدەرێ" پەیجی دەردئێخیت */
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 900;
+  pointer-events: none; /* ناهێلیت نڤیسین ڕێگریێ ل کلیکا داهاتی بکەت */
+  text-shadow: 0px 2px 10px rgba(0,0,0,0.3);
+  animation: floatAndFade 0.7s ease-out forwards;
+  z-index: 100;
 }
 
-/* ئەنیمەیشن بۆ وێ چەندێ +1 بەرەڤ سەری بچیت و بەرزە بیت */
-@keyframes moveUp {
+/* ئەنیمەیشنا +1 کو بەرەڤ سەری بچیت و بەرزە بیت */
+@keyframes floatAndFade {
   0% {
     opacity: 1;
     transform: translateY(0);
   }
   100% {
     opacity: 0;
-    transform: translateY(-150px);
+    transform: translateY(-200px); /* بەرەڤ سەری دچیت بێی کو وێنەی ب لڤینیت */
   }
+}
+
+/* 4. جێگیرکرنا بارێ خوارێ (Progress Bar) */
+.progress-bar-container {
+  position: absolute;
+  bottom: 80px;
+  width: 90%;
+  z-index: 5;
 }
