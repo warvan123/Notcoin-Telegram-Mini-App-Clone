@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// لینکێن وێنەیان دا Error نەیێت
 const coinImg = "https://static.vecteezy.com/system/resources/previews/022/636/301/original/golden-coin-ai-generative-free-png.png";
 const highVoltage = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/High_voltage_warning_symbol.svg/1024px-High_voltage_warning_symbol.svg.png";
 
@@ -56,10 +55,18 @@ function App() {
       )}
 
       <div className="nav-bar">
-        <button onClick={() => setActiveTab('game')} className={`nav-item ${activeTab === 'game' ? 'active' : ''}`}>🎮<span>Game</span></button>
-        <button onClick={() => setActiveTab('tasks')} className={`nav-item ${activeTab === 'tasks' ? 'active' : ''}`}>📋<span>Tasks</span></button>
-        <button onClick={() => setActiveTab('invite')} className={`nav-item ${activeTab === 'invite' ? 'active' : ''}`}>👥<span>Invite</span></button>
-        <button onClick={() => setActiveTab('wallet')} className={`nav-item ${activeTab === 'wallet' ? 'active' : ''}`}>💰<span>Wallet</span></button>
+        <button onClick={() => setActiveTab('game')} className={activeTab === 'game' ? 'nav-item active' : 'nav-item'}>
+          🎮<span>Game</span>
+        </button>
+        <button onClick={() => setActiveTab('tasks')} className={activeTab === 'tasks' ? 'nav-item active' : 'nav-item'}>
+          📋<span>Tasks</span>
+        </button>
+        <button onClick={() => setActiveTab('invite')} className={activeTab === 'invite' ? 'nav-item active' : 'nav-item'}>
+          👥<span>Invite</span>
+        </button>
+        <button onClick={() => setActiveTab('wallet')} className={activeTab === 'wallet' ? 'nav-item active' : 'nav-item'}>
+          💰<span>Wallet</span>
+        </button>
       </div>
     </div>
   );
