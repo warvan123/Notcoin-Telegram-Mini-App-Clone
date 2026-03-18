@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css'
 import { coin, highVoltage, onecoin, rocket, trophy } from './images';
 function App() {
