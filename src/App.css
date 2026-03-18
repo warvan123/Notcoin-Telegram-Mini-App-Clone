@@ -1,4 +1,4 @@
-/* ئەڤە هەمی کۆدێ فایلی App.css یە */
+/* ئەڤە هەمی کۆدێ نووی یێ فایلی App.css یە */
 
 #root {
   max-width: 1280px;
@@ -8,27 +8,27 @@
 }
 
 .bg-gradient-main {
-  /* لێرە ڕەنگێ شینی ئەسمانی یێ لینیار (Linear) هاتییە دانان */
+  /* ڕەنگێ شینی ئەسمانی یێ لینیار (Linear) */
   background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: sans-serif;
 }
 
-/* ئەگەر تە دڤێت وێنێ دراوی (Coin) کێمەکێ بلەرزیت کاتێ مشک دچیتە سەر */
 img {
   user-select: none;
   -webkit-user-drag: none;
+  cursor: pointer;
 }
 
 .card {
   padding: 2em;
 }
 
-/* ئەنیمەیشنا کلیک کرنێ بۆ وێنەی */
+/* ئەنیمەیشنا کلیک کرنێ بۆ وێنەی دا کو کێمەکێ بچووک ببیت */
 .coin-animation {
   transition: transform 0.1s ease-in-out;
 }
@@ -39,4 +39,4 @@ img {
 
 .read-the-docs {
   color: #888;
-}-
+}
