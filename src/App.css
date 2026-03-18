@@ -9,7 +9,7 @@ body, html {
   justify-content: space-between; align-items: center; padding: 40px 0;
 }
 
-.score-container { display: flex; align-items: center; gap: 10px; }
+.score-container { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
 .score-coin-img { width: 45px; height: 45px; }
 .score-number { font-size: 3.5rem; font-weight: 900; color: white; }
 .rank-info { color: white; font-weight: bold; text-align: center; margin-top: 5px; }
@@ -20,13 +20,9 @@ body, html {
   touch-action: none;
 }
 
-.main-render-coin {
-  width: 300px; cursor: pointer; transition: transform 0.05s;
-}
-
+.main-render-coin { width: 300px; cursor: pointer; transition: transform 0.05s; }
 .main-render-coin:active { transform: scale(0.94); }
 
-/* ئەڤە وادکەت +1 نەچیتە ژێر وێنەی و جهی تێک نەدەت */
 .floating-plus {
   position: fixed; color: white; font-size: 32px; font-weight: bold;
   pointer-events: none; z-index: 100; animation: floatUp 0.6s ease-out forwards;
@@ -37,16 +33,15 @@ body, html {
   100% { opacity: 0; transform: translate(-50%, -150px); }
 }
 
-/* ستایلێ بارا وزەی و مینیویا تە */
-.energy-section { width: 100%; px: 40px; margin-bottom: 120px; display: flex; flex-direction: column; align-items: center;}
-.energy-label { display: flex; align-items: center; color: white; font-weight: bold; margin-bottom: 8px; }
+.energy-section { position: fixed; bottom: 110px; width: 100%; padding: 0 40px; display: flex; flex-direction: column; align-items: center;}
+.energy-label { display: flex; align-items: center; color: white; font-weight: bold; margin-bottom: 8px; width: 85%; }
 .energy-bar-bg { width: 85%; height: 12px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 .energy-bar-fill { height: 100%; background: white; box-shadow: 0 0 15px white; transition: width 0.3s; }
 
 .bottom-nav-bar {
   position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.4);
   backdrop-filter: blur(15px); display: flex; justify-content: space-around;
-  padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 50;
 }
 
 .nav-item { background: none; border: none; color: white; opacity: 0.5; cursor: pointer; text-align: center; }
