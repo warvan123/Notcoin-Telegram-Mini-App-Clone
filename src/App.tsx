@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// ئاگاداربا ناڤێ وێنەیێن خۆ لێرە ڕاست بکە
-import highVoltage from './assets/high-voltage.png'; 
+// لینکێن ئامادە یێن وێنەیان دا ئیتر Error نەمینیت
 const coinImg = "https://static.vecteezy.com/system/resources/previews/022/636/301/original/golden-coin-ai-generative-free-png.png";
+const highVoltage = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/High_voltage_warning_symbol.svg/1024px-High_voltage_warning_symbol.svg.png";
 
 function App() {
   const [activeTab, setActiveTab] = useState('game');
@@ -29,7 +29,6 @@ function App() {
     <div className="game-wrapper">
       {activeTab === 'game' && (
         <>
-          {/* بەشێ سەرێ: سکۆر */}
           <div className="score-header">
             <div className="score-container">
               <img src={coinImg} className="score-coin-img" alt="coin" />
@@ -38,7 +37,6 @@ function App() {
             <div className="rank-info">🏆 Bronze Rank</div>
           </div>
 
-          {/* بەشێ ناڤەڕاستێ: کۆین (جێگیر و قفل) */}
           <div className="coin-interaction-area" onPointerDown={handleTap}>
             <img src={coinImg} className="main-render-coin" alt="Coin" draggable="false" />
             {clicks.map((click) => (
@@ -48,10 +46,9 @@ function App() {
             ))}
           </div>
 
-          {/* بارا وزەی (Energy Bar) - ڕێک وەک کۆدێ تە یێ کەفن */}
           <div className="energy-section">
             <div className="energy-label">
-              <img src={highVoltage} width={14} alt="energy" /> 
+              <img src={highVoltage} width={18} alt="energy" /> 
               <span className="ml-1 font-mono">{energy} / 6500</span>
             </div>
             <div className="energy-bar-bg">
@@ -61,7 +58,6 @@ function App() {
         </>
       )}
 
-      {/* مینیویا خوارێ (Navigation Bar) */}
       <div className="bottom-nav-bar">
         <button onClick={() => setActiveTab('game')} className={`nav-item ${activeTab === 'game' ? 'active' : ''}`}>
           🎮<span className="nav-text">Game</span>
