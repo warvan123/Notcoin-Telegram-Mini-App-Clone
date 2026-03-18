@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css'
-import { coin, highVoltage, onecoin, rocket, trophy } from './assets/images';
+import { coin, highVoltage, onecoin, rocket, trophy } from './images';
 function App() {
   const [points, setPoints] = useState(0);
   const [energy, setEnergy] = useState(6500);
