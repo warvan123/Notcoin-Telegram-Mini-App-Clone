@@ -2,6 +2,16 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { coin, highVoltage, onecoin, rocket, trophy } from './images';
 
+// پێناسا جۆرێ تاسکان بۆ نەمانا ئیرۆران
+interface Task {
+  id: number;
+  title: string;
+  reward: number;
+  icon: string;
+  link: string;
+  claimed: boolean;
+}
+
 function App() {
   const [activeTab, setActiveTab] = useState('game');
   const [points, setPoints] = useState(() => Number(localStorage.getItem('points')) || 0);
@@ -10,10 +20,10 @@ function App() {
   const [isBoost, setIsBoost] = useState(false);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
 
-  // لۆژیکی پاشکەوتکردنی تاسکەکان تاوەکو دوای دەرچوون نەگەڕێنەوە
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('user_tasks');
-    if (savedTasks) return JSON.parse(savedTasks);
+  // بارکرنا تاسکان ژ زاکیرێ دا کو نەزەڤرنەڤە
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const saved = localStorage.getItem('user_tasks');
+    if (saved) return JSON.parse(saved);
     return [
       { 
         id: 1, 
@@ -34,7 +44,7 @@ function App() {
     ];
   });
 
-  // پاشکەوتکردنی هەموو گۆڕانکارییەکان
+  // پاشکەوتکرنا داتایان
   useEffect(() => {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('energy', energy.toString());
@@ -42,92 +52,90 @@ function App() {
     localStorage.setItem('user_tasks', JSON.stringify(tasks));
   }, [points, energy, autoLevel, tasks]);
 
+  // ئۆتۆ-کلیک و نووکرنا وزەی
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (autoLevel > 0) setPoints(prev => prev + autoLevel);
+    const intv = setInterval(() => {
+      if (autoLevel > 0) setPoints(p => p + autoLevel);
+      setEnergy(e => Math.min(e + 1, 6500));
     }, 1000);
-    return () => clearInterval(interval);
+    return () => clearInterval(intv);
   }, [autoLevel]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setEnergy(prev => Math.min(prev + 1, 6500));
-    }, 1500);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (energy <= 0 || activeTab !== 'game') return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    setPoints(prev => prev + (isBoost ? 5 : 1));
-    setEnergy(prev => Math.max(0, prev - 1));
+
+    setPoints(p => p + (isBoost ? 5 : 1));
+    setEnergy(e => Math.max(0, e - 1));
     setClicks([...clicks, { id: Date.now(), x, y }]);
   };
 
   const handleTask = (id: number, reward: number, link: string) => {
     window.open(link, '_blank');
-    setTasks((prevTasks: any[]) => {
-      const updated = prevTasks.map(t => t.id === id ? { ...t, claimed: true } : t);
-      return updated;
-    });
-    setPoints(prev => prev + reward);
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, claimed: true } : t));
+    setPoints(p => p + reward);
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText("https://t.me/your_bot?start=user");
+    alert("Link Copied! 🚀");
   };
 
   return (
-    <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none text-white">
+    <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none text-white font-sans">
       
+      {/* پۆینت ل سەرێ هەمی لاپەڕان */}
       <div className="mt-10 text-center z-20">
-        <div className="text-5xl font-bold flex items-center justify-center">
-          <img src={coin} width={45} />
-          <span className="ml-2 font-mono">{points.toLocaleString()}</span>
+        <div className="text-5xl font-black flex items-center justify-center tracking-tighter">
+          <img src={coin} width={42} alt="coin" />
+          <span className="ml-2">{points.toLocaleString()}</span>
         </div>
+        {activeTab === 'game' && (
+          <div className="flex items-center justify-center gap-2 mt-1 opacity-80">
+            <img src={trophy} width={18} alt="rank" />
+            <span className="font-bold">{points > 10000 ? "Silver" : "Bronze"} Rank</span>
+          </div>
+        )}
       </div>
 
+      {/* --- لاپەڕێ یاریێ --- */}
       {activeTab === 'game' && (
         <>
-          <div className="text-white/90 font-bold mt-2 flex items-center justify-center gap-2">
-            <img src={trophy} width={20} />
-            <span>{points > 5000 ? "Silver" : "Bronze"} Rank</span>
-            {isBoost && <img src={rocket} width={22} className="animate-pulse" />}
-          </div>
-          <div className="flex-grow flex items-center justify-center w-full">
-            <div className="relative coin-wrapper touch-none" onClick={handleClick}>
-              <img src={onecoin} width={240} className="main-coin" />
-              {clicks.map(click => (
-                <div key={click.id} className="floating-num" style={{ left: click.x, top: click.y }} onAnimationEnd={() => setClicks(prev => prev.filter(c => c.id !== click.id))}>
+          <div className="flex-grow flex items-center justify-center w-full relative">
+            <div className="coin-wrapper" onClick={handleClick}>
+              <img src={onecoin} width={250} className="main-coin shadow-2xl" alt="clicker" />
+              {clicks.map(c => (
+                <div key={c.id} className="floating-num" style={{ left: c.x, top: c.y }} onAnimationEnd={() => setClicks(prev => prev.filter(cl => cl.id !== c.id))}>
                   +{isBoost ? 5 : 1}
                 </div>
               ))}
             </div>
           </div>
-          <div className="flex gap-4 mb-32 z-20">
+          <div className="flex gap-4 mb-36 z-20">
             <button onClick={() => points >= 100 && (setPoints(p=>p-100), setAutoLevel(a=>a+1))} className="btn-action">🤖 Auto (+{autoLevel})</button>
-            <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action ${isBoost ? 'bg-orange-600' : ''}`}>🚀 5X Boost</button>
+            <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action ${isBoost ? 'bg-orange-500 animate-pulse' : ''}`}>🚀 Boost</button>
           </div>
         </>
       )}
 
+      {/* --- لاپەڕێ تاسکان --- */}
       {activeTab === 'tasks' && (
-        <div className="flex-grow w-full px-6 mt-10 overflow-y-auto pb-32">
+        <div className="flex-grow w-full px-6 mt-10 overflow-y-auto pb-40">
           <h2 className="text-2xl font-bold mb-6 text-center">Tasks List 💰</h2>
           <div className="flex flex-col gap-4">
-            {tasks.map((task: any) => (
-              <div key={task.id} className="task-card flex items-center justify-between">
+            {tasks.map(t => (
+              <div key={t.id} className="task-card flex items-center justify-between p-4 bg-white/10 rounded-2xl border border-white/10">
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl">{task.icon}</span>
+                  <span className="text-3xl">{t.icon}</span>
                   <div>
-                    <p className="font-bold text-sm">{task.title}</p>
-                    <p className="text-xs text-blue-300">+{task.reward.toLocaleString()} Coins</p>
+                    <p className="font-bold text-sm">{t.title}</p>
+                    <p className="text-xs text-blue-300">+{t.reward.toLocaleString()}</p>
                   </div>
                 </div>
-                <button 
-                  onClick={() => handleTask(task.id, task.reward, task.link)} 
-                  className={`btn-claim ${task.claimed ? 'bg-green-600 text-white opacity-100' : 'bg-white text-blue-900'}`}
-                  disabled={task.claimed}
-                >
-                  {task.claimed ? '✅ Done' : 'Go'}
+                <button onClick={() => handleTask(t.id, t.reward, t.link)} disabled={t.claimed} className={`px-5 py-2 rounded-xl font-bold ${t.claimed ? 'bg-green-500/50' : 'bg-white text-blue-900'}`}>
+                  {t.claimed ? 'Done' : 'Go'}
                 </button>
               </div>
             ))}
@@ -135,32 +143,35 @@ function App() {
         </div>
       )}
 
+      {/* --- لاپەڕێ ئینڤایت --- */}
       {activeTab === 'invite' && (
-        <div className="flex flex-col items-center justify-center h-full px-6 text-center">
-          <h1 className="text-3xl font-bold mb-4">Invite Friends! 👥</h1>
-          <p className="opacity-80 mb-8">Invite friends and get 5,000 coins!</p>
-          <div className="invite-card p-6 w-full border border-white/20">
-            <code className="text-blue-300 block mb-4">t.me/your_bot?start=user</code>
-            <button className="bg-white text-blue-600 font-bold py-3 px-8 rounded-2xl w-full">Copy Link</button>
-          </div>
+        <div className="flex-grow w-full px-6 flex flex-col items-center justify-center text-center pb-40">
+           <h1 className="text-4xl font-black mb-2">Invite Friends! 👥</h1>
+           <p className="opacity-70 mb-10 text-lg">Get 5,000 coins for each friend!</p>
+           <div className="bg-white/10 p-8 w-full rounded-[35px] border border-white/20 backdrop-blur-md">
+              <code className="block bg-black/20 p-4 rounded-2xl mb-6 text-blue-300 text-sm">t.me/your_bot?start=user</code>
+              <button onClick={copyLink} className="bg-white text-blue-700 font-black py-4 px-8 rounded-2xl w-full text-xl shadow-lg active:scale-95 transition-all">Copy Link</button>
+           </div>
         </div>
       )}
 
-      <div className="fixed bottom-0 w-full bg-black/40 backdrop-blur-lg flex justify-around items-center py-4 border-t border-white/10 z-50">
-        <button onClick={() => setActiveTab('game')} className={`nav-btn ${activeTab === 'game' ? 'active' : ''}`}>🎮<span className="text-[10px]">Game</span></button>
-        <button onClick={() => setActiveTab('tasks')} className={`nav-btn ${activeTab === 'tasks' ? 'active' : ''}`}>📋<span className="text-[10px]">Tasks</span></button>
-        <button onClick={() => setActiveTab('invite')} className={`nav-btn ${activeTab === 'invite' ? 'active' : ''}`}>👥<span className="text-[10px]">Invite</span></button>
-        <button className="nav-btn opacity-40">💰<span className="text-[10px]">Wallet</span></button>
-        <button className="nav-btn opacity-40">📊<span className="text-[10px]">Stats</span></button>
+      {/* Navigation Bar */}
+      <div className="fixed bottom-0 w-full bg-black/40 backdrop-blur-xl flex justify-around items-center py-5 border-t border-white/10 z-50">
+        <button onClick={() => setActiveTab('game')} className={`nav-btn ${activeTab === 'game' ? 'active text-blue-400' : 'opacity-50'}`}>🎮<span className="text-[10px] block">Game</span></button>
+        <button onClick={() => setActiveTab('tasks')} className={`nav-btn ${activeTab === 'tasks' ? 'active text-blue-400' : 'opacity-50'}`}>📋<span className="text-[10px] block">Tasks</span></button>
+        <button onClick={() => setActiveTab('invite')} className={`nav-btn ${activeTab === 'invite' ? 'active text-blue-400' : 'opacity-50'}`}>👥<span className="text-[10px] block">Invite</span></button>
+        <button className="nav-btn opacity-30">💰<span className="text-[10px] block">Wallet</span></button>
+        <button className="nav-btn opacity-30">📊<span className="text-[10px] block">Stats</span></button>
       </div>
 
+      {/* بارا وزەی */}
       {activeTab === 'game' && (
-        <div className="fixed bottom-24 w-full px-10">
-          <div className="flex items-center mb-1 text-xs">
-            <img src={highVoltage} width={15} /> <span className="ml-1 font-bold">{energy} / 6500</span>
+        <div className="fixed bottom-28 w-full px-10">
+          <div className="flex items-center mb-2 text-xs font-bold">
+            <img src={highVoltage} width={14} alt="energy" /> <span className="ml-1">{energy} / 6500</span>
           </div>
-          <div className="w-full bg-black/30 h-2 rounded-full border border-white/10 overflow-hidden">
-            <div className="bg-white h-full transition-all duration-300" style={{ width: `${(energy/6500) * 100}%` }}></div>
+          <div className="w-full bg-black/30 h-2.5 rounded-full border border-white/10 overflow-hidden shadow-inner">
+            <div className="bg-white h-full transition-all duration-300 shadow-[0_0_10px_white]" style={{ width: `${(energy/6500) * 100}%` }}></div>
           </div>
         </div>
       )}
