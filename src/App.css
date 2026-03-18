@@ -1,50 +1,68 @@
-/* ڕێکخستنی گشتی بۆ هەموو پەیجەکە */
+/* --- App.css --- */
+
+/* ڕێکخستنی بنەڕەتی بۆ هەموو لاپەڕەکە */
 .App {
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #282c34; /* ڕەنگی پشتێنەی تاریک */
-  color: white; /* ڕەنگی نووسین */
+  background-color: #121212; /* ڕەنگی پشتێنەی تاریکی مۆدێرن */
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
 }
 
-/* ستایلی لۆگۆکە ئەگەر هەبێت */
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ستایلی سەرەکی بۆ نووسینەکان */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #00d4ff; /* ڕەنگی شینێکی گەش */
 }
 
-/* جووڵەی سوڕانەوە بۆ لۆگۆکە */
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+p {
+  font-size: 1.2rem;
+  color: #b0b0b0;
+  margin-bottom: 30px;
+}
+
+/* --- ستایلی دوگمەکە (Button Style) --- */
+.custom-button {
+  background: linear-gradient(135deg, #007bff, #00d4ff); /* ڕەنگی پلەدار (Gradient) */
+  color: white;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px; /* قەراغەکان بە جوانی خڕ دەکات */
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* سێبەرێکی نەرم */
+  transition: all 0.3s ease; /* بۆ ئەوەی گۆڕانکارییەکان نەرم بن */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* کاتێک ماوس دەچێتە سەر دوگمەکە */
+.custom-button:hover {
+  transform: translateY(-3px); /* کەمێک بەرز دەبێتەوە */
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5); /* سێبەرەکەی بەهێزتر دەبێت */
+  filter: brightness(1.1); /* کەمێک ڕووناکتر دەبێتەوە */
+}
+
+/* کاتێک پەستان لەسەر دوگمەکە دەکەیت */
+.custom-button:active {
+  transform: translateY(1px); /* هەستێکی ڕاستەقینەی پەستانت پێ دەدات */
+}
+
+/* ڕێکخستن بۆ شاشەی مۆبایل */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2rem;
   }
-}
-
-/* ستایلی سەرپەڕە (Header) */
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-}
-
-/* ستایلی لینکەکان */
-.App-link {
-  color: #61dafb;
-}
-
-/* ئەنیمەیشنی سوڕانەوەکە */
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+  .custom-button {
+    width: 80%;
+    padding: 12px;
   }
 }
