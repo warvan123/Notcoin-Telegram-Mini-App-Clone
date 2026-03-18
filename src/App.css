@@ -1,42 +1,21 @@
-/* ئەڤە هەمی کۆدێ نووی یێ فایلی App.css یە */
-
+/* App.css */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 0;
-  text-align: center;
 }
 
 .bg-gradient-main {
-  /* ڕەنگێ شینی ئەسمانی یێ لینیار (Linear) */
-  background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%);
-  min-height: 100vh;
+  background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%) !important;
+  background-color: #3a7bd5 !important; /* ئەگەر گڕادێنت کاری نەکەت */
+  min-height: 100vh !important;
+  width: 100vw !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: white;
-  font-family: sans-serif;
-}
-
-img {
-  user-select: none;
-  -webkit-user-drag: none;
-  cursor: pointer;
-}
-
-.card {
-  padding: 2em;
-}
-
-/* ئەنیمەیشنا کلیک کرنێ بۆ وێنەی دا کو کێمەکێ بچووک ببیت */
-.coin-animation {
-  transition: transform 0.1s ease-in-out;
+  margin: 0 !important;
 }
 
 .coin-animation:active {
   transform: scale(0.95);
-}
-
-.read-the-docs {
-  color: #888;
 }
