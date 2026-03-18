@@ -1,37 +1,48 @@
-/* پاشبنماکە دەکەین بە ڕەش بۆ ئەوەی تەنیا کۆینەکە بە ڕوونی دیار بێت */
-body, html, #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000000; /* ڕەنگی ڕەش */
-  overflow: hidden;
-  color: white;
-}
-
-.bg-gradient-main {
-  background: none !important; /* لابردنی ڕەنگە شینەکە */
-  background-color: #000000;
-  height: 100vh;
-  width: 100%;
-}
-
-/* گەورەکردنی کۆینەکە و هێنانە ناوەڕاست */
-.coin-wrapper {
+/* ڕێکخستنی گشتی بۆ پەیجەکە */
+.App {
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  position: relative;
+  justify-content: center;
+  background-color: #1a1a1a; /* ڕەنگێکی تاریکی مۆدێرن */
+  color: #ffffff;
 }
 
-.main-coin {
-  width: 320px; /* قەبارەی کۆینەکە گەورەتر دەکەین */
-  height: auto;
-  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3)); /* سێبەرێکی زەرد بۆ دەوری کۆینەکە */
+/* ستایلی دوگمەکە (Button Style) */
+.custom-button {
+  background-color: #007bff; /* ڕەنگی شین */
+  color: white;
+  padding: 12px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px; /* قەراغەکان خڕ دەکات */
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-.main-coin:active {
-  transform: scale(0.95); /* کاتێک کلیکی لێ دەکەیت بچووک دەبێتەوە */
+/* کاتێک ماوس دەچێتە سەر دوگمەکە */
+.custom-button:hover {
+  background-color: #0056b3; /* ڕەنگی شینە تاریکەکە */
+  transform: translateY(-2px); /* کەمێک بەرز دەبێتەوە */
+}
+
+/* کاتێک پەستان لەسەر دوگمەکە دەکەیت */
+.custom-button:active {
+  transform: translateY(0);
+}
+
+/* ستایلی دەقەکان */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #cccccc;
+  font-size: 1.1rem;
 }
