@@ -1,78 +1,54 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
+/* App.css */
 body, html {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #f3ba2f; /* ڕەنگێ زەردێ یاریێ */
-  position: fixed;
+  margin: 0; padding: 0; overflow: hidden; height: 100%; width: 100%;
+  background-color: #f3ba2f; position: fixed; font-family: sans-serif;
 }
 
-.game-container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 0;
+.game-wrapper {
+  height: 100vh; width: 100vw; display: flex; flex-direction: column;
+  justify-content: space-between; align-items: center; padding: 40px 0;
 }
 
-.score-box {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.score-container { display: flex; align-items: center; gap: 10px; }
+.score-coin-img { width: 45px; height: 45px; }
+.score-number { font-size: 3.5rem; font-weight: 900; color: white; }
+.rank-info { color: white; font-weight: bold; text-align: center; margin-top: 5px; }
 
-.mini-coin { width: 45px; height: 45px; }
-.main-score { font-size: 3.5rem; font-weight: 900; color: white; margin: 0; }
-.rank { color: white; font-weight: bold; font-size: 1.2rem; }
-
-.coin-area {
-  position: relative;
-  flex: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.coin-interaction-area {
+  position: relative; flex: 1; width: 100%;
+  display: flex; justify-content: center; align-items: center;
   touch-action: none;
 }
 
-.the-coin {
-  width: 280px;
-  cursor: pointer;
-  transition: transform 0.05s;
+.main-render-coin {
+  width: 300px; cursor: pointer; transition: transform 0.05s;
 }
 
-.the-coin:active {
-  transform: scale(0.95);
+.main-render-coin:active { transform: scale(0.94); }
+
+/* ئەڤە وادکەت +1 نەچیتە ژێر وێنەی و جهی تێک نەدەت */
+.floating-plus {
+  position: fixed; color: white; font-size: 32px; font-weight: bold;
+  pointer-events: none; z-index: 100; animation: floatUp 0.6s ease-out forwards;
 }
 
-/* ئەڤە ناهێلیت وێنە بجوولیت چونکی Absolute ئە */
-.tap-effect {
-  position: fixed;
-  color: white;
-  font-size: 35px;
-  font-weight: bold;
-  pointer-events: none;
-  z-index: 100;
-  animation: fadeUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeUp {
+@keyframes floatUp {
   0% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -150px); }
 }
 
-.footer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.energy-info { color: white; font-weight: bold; font-size: 1.1rem; }
-.progress-container { width: 85%; height: 14px; background: rgba(255,255,255,0.3); border-radius: 20px; }
-.progress-bar { height: 100%; background: white; border-radius: 20px; }
-.menu { display: flex; gap: 15px; margin-top: 10px; }
-.menu-btn { background: rgba(0,0,0,0.15); border: none; padding: 12px 25px; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; }
+/* ستایلێ بارا وزەی و مینیویا تە */
+.energy-section { width: 100%; px: 40px; margin-bottom: 120px; display: flex; flex-direction: column; align-items: center;}
+.energy-label { display: flex; align-items: center; color: white; font-weight: bold; margin-bottom: 8px; }
+.energy-bar-bg { width: 85%; height: 12px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.energy-bar-fill { height: 100%; background: white; box-shadow: 0 0 15px white; transition: width 0.3s; }
+
+.bottom-nav-bar {
+  position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(15px); display: flex; justify-content: space-around;
+  padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-item { background: none; border: none; color: white; opacity: 0.5; cursor: pointer; text-align: center; }
+.nav-item.active { opacity: 1; color: #60a5fa; }
+.nav-text { display: block; font-size: 10px; font-weight: bold; }
