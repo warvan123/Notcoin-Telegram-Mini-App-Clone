@@ -21,12 +21,14 @@ function App() {
   const [isBoost, setIsBoost] = useState(false);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
 
+  // بۆ پاشکەوتکردنی زانیارییەکان
   useEffect(() => {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('energy', energy.toString());
     localStorage.setItem('autoLevel', autoLevel.toString());
   }, [points, energy, autoLevel]);
 
+  // سیستەمی ئۆتۆ-کلیک
   useEffect(() => {
     const interval = setInterval(() => {
       if (autoLevel > 0) {
@@ -36,14 +38,13 @@ function App() {
     return () => clearInterval(interval);
   }, [autoLevel]);
 
+  // نوێکردنەوەی وزە
   useEffect(() => {
     const interval = setInterval(() => {
-      if (energy < 6500) {
-        setEnergy(prev => Math.min(prev + 1, 6500));
-      }
-    }, 2000);
+      setEnergy(prev => Math.min(prev + 1, 6500));
+    }, 1500);
     return () => clearInterval(interval);
-  }, [energy]);
+  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (energy <= 0) return;
@@ -69,24 +70,24 @@ function App() {
   };
 
   return (
-    <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center">
-      <div className="mt-8 text-center z-20">
+    <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none">
+      {/* پۆینتەکان */}
+      <div className="mt-10 text-center z-20">
         <div className="text-5xl font-bold flex items-center justify-center text-white">
-          <img src={coin} width={40} alt="coin" />
-          <span className="ml-2">{points.toLocaleString()}</span>
+          <img src={coin} width={45} alt="coin" />
+          <span className="ml-2 font-mono">{points.toLocaleString()}</span>
         </div>
-        <div className="text-white/80 font-bold mt-1 flex items-center justify-center">
-          <img src={trophy} width={18} alt="rank" />
-          <span className="ml-1">
-            {points > 20000 ? "Gold" : points > 5000 ? "Silver" : "Bronze"} Rank
-            {isBoost && <img src={rocket} width={18} className="inline ml-2" alt="rocket" />}
-          </span>
+        <div className="text-white/90 font-bold mt-2 flex items-center justify-center gap-2">
+          <img src={trophy} width={20} alt="rank" />
+          <span>{points > 20000 ? "Gold" : points > 5000 ? "Silver" : "Bronze"} Rank</span>
+          {isBoost && <img src={rocket} width={22} className="animate-bounce" alt="boost" />}
         </div>
       </div>
 
-      <div className="flex-grow flex items-center justify-center w-full relative">
-        <div className="relative cursor-pointer touch-none" onClick={handleClick}>
-          <img src={onecoin} width={220} className="coin-animation select-none" alt="main" />
+      {/* دراوەکە - جێگیر لە شوێنی خۆی */}
+      <div className="flex-grow flex items-center justify-center w-full">
+        <div className="relative coin-wrapper touch-none" onClick={handleClick}>
+          <img src={onecoin} width={240} className="main-coin" alt="clicker" />
           {clicks.map(click => (
             <div
               key={click.id}
@@ -100,25 +101,30 @@ function App() {
         </div>
       </div>
 
-      <div className="flex gap-4 mb-24 z-20">
-        <button onClick={buyAuto} className="btn-shop">
+      {/* دوگمەکانی خوارەوە */}
+      <div className="flex gap-6 mb-28 z-20">
+        <button onClick={buyAuto} className="btn-action">
           🤖 Auto (+{autoLevel})
         </button>
         <button 
           onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} 
-          className={`btn-shop ${isBoost ? 'bg-orange-500 animate-pulse' : ''}`}
+          className={`btn-action ${isBoost ? 'bg-orange-600' : ''}`}
         >
           🚀 5X Boost
         </button>
       </div>
 
-      <div className="fixed bottom-6 w-full px-8 text-white z-20">
-        <div className="flex items-center mb-2">
-          <img src={highVoltage} width={25} alt="energy" />
-          <span className="ml-2 font-bold">{energy} / 6500</span>
+      {/* باربوونی وزە */}
+      <div className="fixed bottom-8 w-full px-10 text-white z-20">
+        <div className="flex items-center mb-2 justify-between">
+          <div className="flex items-center">
+            <img src={highVoltage} width={25} alt="energy" />
+            <span className="ml-2 font-bold">{energy} / 6500</span>
+          </div>
+          <span className="text-sm opacity-70">⚡ Charging...</span>
         </div>
-        <div className="w-full bg-white/20 h-3 rounded-full overflow-hidden">
-          <div className="bg-white h-full transition-all" style={{ width: `${(energy/6500) * 100}%` }}></div>
+        <div className="w-full bg-black/30 h-4 rounded-full border border-white/20 overflow-hidden">
+          <div className="bg-white h-full transition-all duration-300 shadow-[0_0_10px_white]" style={{ width: `${(energy/6500) * 100}%` }}></div>
         </div>
       </div>
     </div>
