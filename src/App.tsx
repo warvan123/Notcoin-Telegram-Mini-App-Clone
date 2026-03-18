@@ -10,22 +10,22 @@ function App() {
   const [isBoost, setIsBoost] = useState(false);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
 
-  // لیستا تاسکان ب لینکا تە یا یوتیوبێ ڤە
+  // لیستی تاسکەکان بە لۆژیکێکی نوێوە
   const [tasks, setTasks] = useState([
     { 
       id: 1, 
-      title: 'Subscribe to Hariwan Crypto', 
-      reward: 10000, 
-      icon: '📺', 
-      link: 'https://youtube.com/@hariwancrypto?si=goCN6DMH_dB5Z4ae', 
+      title: 'Join Telegram Channel', 
+      reward: 5000, 
+      icon: '📢', 
+      link: 'https://t.me/+Q8KuyPNu_Tk2Njk6', 
       claimed: false 
     },
     { 
       id: 2, 
-      title: 'Join Telegram Channel', 
-      reward: 5000, 
-      icon: '📢', 
-      link: 'https://t.me/your_telegram', 
+      title: 'Subscribe to Hariwan Crypto', 
+      reward: 10000, 
+      icon: '📺', 
+      link: 'https://youtube.com/@hariwancrypto?si=goCN6DMH_dB5Z4ae', 
       claimed: false 
     }
   ]);
@@ -36,7 +36,7 @@ function App() {
     localStorage.setItem('autoLevel', autoLevel.toString());
   }, [points, energy, autoLevel]);
 
-  // سیستەمێ ئۆتۆ-کلیک
+  // سیستەمی ئۆتۆ-کلیک
   useEffect(() => {
     const interval = setInterval(() => {
       if (autoLevel > 0) setPoints(prev => prev + autoLevel);
@@ -44,7 +44,7 @@ function App() {
     return () => clearInterval(interval);
   }, [autoLevel]);
 
-  // نووکرنا وزەی
+  // باربوونی وزە
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy(prev => Math.min(prev + 1, 6500));
@@ -72,7 +72,7 @@ function App() {
   return (
     <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none text-white">
       
-      {/* پۆینت ل سەرێ هەمی لاپەڕان */}
+      {/* نیشاندانی پۆینت لە سەرەوە */}
       <div className="mt-10 text-center z-20">
         <div className="text-5xl font-bold flex items-center justify-center">
           <img src={coin} width={45} />
@@ -80,18 +80,18 @@ function App() {
         </div>
       </div>
 
-      {/* --- پشکا GAME --- */}
+      {/* --- پشکی یاری (Game) --- */}
       {activeTab === 'game' && (
         <>
           <div className="text-white/90 font-bold mt-2 flex items-center justify-center gap-2">
             <img src={trophy} width={20} />
             <span>{points > 5000 ? "Silver" : "Bronze"} Rank</span>
-            {isBoost && <img src={rocket} width={22} className="animate-bounce" />}
+            {isBoost && <img src={rocket} width={22} className="animate-pulse" />}
           </div>
 
           <div className="flex-grow flex items-center justify-center w-full">
             <div className="relative coin-wrapper touch-none" onClick={handleClick}>
-              <img src={onecoin} width={240} className="main-coin" />
+              <img src={onecoin} width={240} className="main-coin" alt="coin" />
               {clicks.map(click => (
                 <div key={click.id} className="floating-num" style={{ left: click.x, top: click.y }} onAnimationEnd={() => setClicks(prev => prev.filter(c => c.id !== click.id))}>
                   +{isBoost ? 5 : 1}
@@ -102,15 +102,15 @@ function App() {
 
           <div className="flex gap-4 mb-32 z-20">
             <button onClick={() => points >= 100 && (setPoints(p=>p-100), setAutoLevel(a=>a+1))} className="btn-action">🤖 Auto (+{autoLevel})</button>
-            <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action ${isBoost ? 'bg-orange-600 animate-pulse' : ''}`}>🚀 5X Boost</button>
+            <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action ${isBoost ? 'bg-orange-600' : ''}`}>🚀 5X Boost</button>
           </div>
         </>
       )}
 
-      {/* --- پشکا TASKS --- */}
+      {/* --- پشکی ئەرکەکان (Tasks) --- */}
       {activeTab === 'tasks' && (
         <div className="flex-grow w-full px-6 mt-10 overflow-y-auto pb-32">
-          <h2 className="text-2xl font-bold mb-6 text-center">Tasks List 💰</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">New Tasks 💰</h2>
           <div className="flex flex-col gap-4">
             {tasks.map(task => (
               <div key={task.id} className="task-card flex items-center justify-between">
@@ -134,11 +134,11 @@ function App() {
         </div>
       )}
 
-      {/* --- پشکا INVITE --- */}
+      {/* --- پشکی بانگهێشت (Invite) --- */}
       {activeTab === 'invite' && (
         <div className="flex flex-col items-center justify-center h-full px-6 text-center">
           <h1 className="text-3xl font-bold mb-4">Invite Friends! 👥</h1>
-          <p className="opacity-80 mb-8">Invite friends and get 5,000 coins!</p>
+          <p className="opacity-80 mb-8">Get 5,000 coins for every friend!</p>
           <div className="invite-card p-6 w-full border border-white/20">
             <p className="text-sm opacity-60 mb-2">Your Link:</p>
             <code className="text-blue-300 block mb-4">t.me/your_bot?start=user</code>
@@ -152,11 +152,11 @@ function App() {
         <button onClick={() => setActiveTab('game')} className={`nav-btn ${activeTab === 'game' ? 'active' : ''}`}>🎮<span className="text-[10px]">Game</span></button>
         <button onClick={() => setActiveTab('tasks')} className={`nav-btn ${activeTab === 'tasks' ? 'active' : ''}`}>📋<span className="text-[10px]">Tasks</span></button>
         <button onClick={() => setActiveTab('invite')} className={`nav-btn ${activeTab === 'invite' ? 'active' : ''}`}>👥<span className="text-[10px]">Invite</span></button>
-        <button className="nav-btn opacity-40 text-xs">💰Wallet</button>
-        <button className="nav-btn opacity-40 text-xs">📊Stats</button>
+        <button className="nav-btn opacity-40">💰<span className="text-[10px]">Wallet</span></button>
+        <button className="nav-btn opacity-40">📊<span className="text-[10px]">Stats</span></button>
       </div>
 
-      {/* بارا وزەی (تەنێ د لاپەڕێ یاریێ دا) */}
+      {/* باری وزە (تەنیا لە لاپەڕەی یاری) */}
       {activeTab === 'game' && (
         <div className="fixed bottom-24 w-full px-10">
           <div className="flex items-center mb-1 text-xs">
