@@ -35,7 +35,7 @@ function App() {
 
       <div className="flex-grow flex items-center justify-center">
         <div className="relative mt-4" onClick={handleClick}>
-          <img src={notcoin} width={256} height={256} alt="Onecoin" />
+          <img src={onecoin} width={256} height={256} alt="Onecoin" />
           {clicks.map((click) => (
             <div key={click.id} className="absolute text-5xl font-bold opacity-0" style={{ top: `${click.y - 42}px`, left: `${click.x - 28}px`, animation: `float 1s ease-out` }} onAnimationEnd={() => handleAnimationEnd(click.id)}>
               +{pointsToAdd}
