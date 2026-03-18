@@ -1,42 +1,45 @@
 import React, { useState } from 'react';
 import './App.css';
 
+// ئەز دێ لینکەکێ ئامادە یێ وێنەی دانم دا ئیتر کێشەیا "Image not found" نەمینیت
+const coinImg = "https://static.vecteezy.com/system/resources/previews/022/636/301/original/golden-coin-ai-generative-free-png.png";
+
 const App: React.FC = () => {
-  const [score, setScore] = useState(37612);
+  const [score, setScore] = useState(37696);
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
 
-  // وێنەیێ کۆینێ ژ ڤێرە بگۆڕە ئەگەر تە لینکەکێ دی هەبیت
-  const coinImg = "https://static.vecteezy.com/system/resources/previews/022/636/301/original/golden-coin-ai-generative-free-png.png";
-
   const handleTap = (e: React.PointerEvent) => {
-    setScore(score + 1);
+    setScore(prev => prev + 1);
+    
     const id = Date.now();
-    setClicks([...clicks, { id, x: e.clientX, y: e.clientY }]);
+    // گرتنا شوونا کلیکێ ڕێک ل سەر شاشێ
+    setClicks(prev => [...prev, { id, x: e.clientX, y: e.clientY }]);
 
+    // لادانا +1 پشتی نیڤ چرکێ
     setTimeout(() => {
-      setClicks((prev) => prev.filter((c) => c.id !== id));
+      setClicks(prev => prev.filter(c => c.id !== id));
     }, 600);
   };
 
   return (
-    <div className="main-container">
+    <div className="game-container">
       {/* بەشێ سەرێ: سکۆر */}
-      <div className="top-header">
-         <div className="score-box">
-            <img src={coinImg} className="score-coin" alt="coin" />
-            <span className="score-val">{score.toLocaleString()}</span>
-         </div>
-         <div className="rank-tag">🏆 Bronze Rank</div>
+      <div className="header">
+        <div className="score-box">
+          <img src={coinImg} className="mini-coin" alt="coin" />
+          <h1 className="main-score">{score.toLocaleString()}</h1>
+        </div>
+        <div className="rank">🏆 Bronze Rank</div>
       </div>
 
-      {/* بەشێ ناڤەڕاستێ: کۆین */}
-      <div className="click-area" onPointerDown={handleTap}>
-        <img src={coinImg} className="big-coin" alt="Coin" draggable="false" />
+      {/* بەشێ ناڤەڕاستێ: کۆین (ئەڤە ناهێلیت وێنە لڤ لڤێ بکەت) */}
+      <div className="coin-area" onPointerDown={handleTap}>
+        <img src={coinImg} className="the-coin" alt="Main Coin" draggable="false" />
         
         {clicks.map((click) => (
           <span 
             key={click.id} 
-            className="plus-one" 
+            className="tap-effect" 
             style={{ left: click.x, top: click.y }}
           >
             +1
@@ -44,17 +47,15 @@ const App: React.FC = () => {
         ))}
       </div>
 
-      {/* بەشێ خوارێ */}
-      <div className="bottom-ui">
-        <div className="stats">
-          <span>⚡ 6465 / 6500</span>
+      {/* بەشێ خوارێ: بار و بوتۆن */}
+      <div className="footer">
+        <div className="energy-info">⚡ 6465 / 6500</div>
+        <div className="progress-container">
+          <div className="progress-bar" style={{ width: '95%' }}></div>
         </div>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: '95%' }}></div>
-        </div>
-        <div className="action-btns">
-          <button className="btn">🤖 Auto (+10)</button>
-          <button className="btn">🚀 Boost</button>
+        <div className="menu">
+          <button className="menu-btn">🤖 Auto</button>
+          <button className="menu-btn">🚀 Boost</button>
         </div>
       </div>
     </div>
