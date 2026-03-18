@@ -1,89 +1,99 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { coin, highVoltage, onecoin, rocket, trophy } from './images';
 
 function App() {
   const [points, setPoints] = useState(0);
   const [energy, setEnergy] = useState(6500);
+  const [autoLevel, setAutoLevel] = useState(0);
+  const [isBoost, setIsBoost] = useState(false);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
-  const pointsToAdd = 1;
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (energy <= 0) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  // 1. سیستەمێ Auto-Clicker (کار دکەت هەر چرکەیەکێ)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (autoLevel > 0) {
+        setPoints(p => p + autoLevel);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [autoLevel]);
 
-    setPoints(points + pointsToAdd);
-    setEnergy(energy - 1);
-    setClicks([...clicks, { id: Date.now(), x, y }]);
+  // 2. سیستەمێ ئاست و ناڤان (Level System)
+  const getRank = () => {
+    if (points < 5000) return { name: "Bronze", color: "#cd7f32" };
+    if (points < 20000) return { name: "Silver", color: "#c0c0c0" };
+    return { name: "Gold", color: "#ffd700" };
   };
 
-  const handleAnimationEnd = (id: number) => {
-    setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
+  const handleClick = (e: React.MouseEvent) => {
+    if (energy <= 0) return;
+    
+    const pointsToAdd = isBoost ? 5 : 1;
+    setPoints(points + pointsToAdd);
+    setEnergy(energy - 1);
+
+    // 4. ئەنیمەیشنا ژماران (Floating Points)
+    setClicks([...clicks, { id: Date.now(), x: e.clientX, y: e.clientY }]);
   };
 
   return (
-    <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium">
-      
-      {/* بەشێ سەرەکی یێ پۆینتان */}
-      <div className="mt-12 text-5xl font-bold flex items-center z-10">
-        <img src={coin} width={44} height={44} alt="Coin" />
-        <span className="ml-2">{points.toLocaleString()}</span>
-      </div>
-
-      {/* بەشێ خەڵات و ئاستی یارییێ */}
-      <div className="text-[#ffd334] font-medium flex items-center z-10 mt-2">
-        <img src={trophy} width={24} height={24} alt="Trophy" />
-        <span className="ml-1">Gold <img src={rocket} width={24} height={24} alt="Rocket" /></span>
-      </div>
-
-      {/* وێنێ سەرەکی یێ ONECOIN بۆ کلیک کرنێ */}
-      <div className="flex-grow flex items-center justify-center z-10">
-        <div className="relative" onClick={handleClick}>
-          <img 
-            src={onecoin} 
-            width={256} 
-            height={256} 
-            alt="OneCoin" 
-            className="coin-animation select-none"
-          />
-          {clicks.map((click) => (
-            <div
-              key={click.id}
-              className="absolute text-4xl font-bold opacity-0"
-              style={{
-                top: `${click.y - 42}px`,
-                left: `${click.x - 20}px`,
-                animation: `float 1s ease-out`
-              }}
-              onAnimationEnd={() => handleAnimationEnd(click.id)}
-            >
-              +{pointsToAdd}
-            </div>
-          ))}
+    <div className="bg-gradient-main">
+      {/* پۆینت و ڕانکا یاریزانی */}
+      <div className="mt-12 text-center">
+        <div className="text-5xl font-bold flex items-center justify-center">
+          <img src={coin} width={45} />
+          <span className="ml-2">{points.toLocaleString()}</span>
+        </div>
+        <div className="flex items-center justify-center mt-2" style={{ color: getRank().color }}>
+          <img src={trophy} width={20} />
+          <span className="ml-2 font-bold">{getRank().name} Rank</span>
         </div>
       </div>
 
-      {/* بەشێ وزە (Energy Bar) ل خوارێ */}
-      <div className="fixed bottom-8 left-0 w-full px-4 z-10">
-        <div className="flex items-center justify-between">
+      {/* بەشێ کلیک کرنێ */}
+      <div className="flex-grow flex items-center justify-center relative">
+        <img 
+          src={onecoin} 
+          width={260} 
+          onClick={handleClick} 
+          className="coin-animation select-none"
+        />
+        {clicks.map(c => (
+          <span key={c.id} className="floating-point" style={{ left: c.x, top: c.y }}>
+            +{isBoost ? 5 : 1}
+          </span>
+        ))}
+      </div>
+
+      {/* بەشێ دوگمەیێن زێدە (Shop & Boost) */}
+      <div className="flex gap-4 mb-32">
+        <button 
+          onClick={() => { if(points >= 100) { setPoints(p-100); setAutoLevel(a+1); }}}
+          className="bg-white/10 p-3 rounded-xl border border-white/20"
+        >
+          🤖 Auto (100 pts)
+        </button>
+        <button 
+          onClick={() => { setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000); }}
+          className={`p-3 rounded-xl border ${isBoost ? 'bg-orange-500' : 'bg-white/10'}`}
+        >
+          🚀 5X Boost
+        </button>
+      </div>
+
+      {/* بارا وزەی */}
+      <div className="fixed bottom-8 w-full px-8 text-white">
+        <div className="flex justify-between items-center mb-2">
           <div className="flex items-center">
-            <img src={highVoltage} width={44} height={44} alt="High Voltage" />
-            <div className="ml-2 text-left">
-              <span className="text-white text-2xl font-bold block">{energy}</span>
-              <span className="text-white/80 text-sm">/ 6500</span>
-            </div>
+            <img src={highVoltage} width={30} />
+            <span className="ml-2 font-bold">{energy} / 6500</span>
           </div>
         </div>
-        <div className="w-full bg-[#fad258]/20 rounded-full mt-4">
-          <div 
-            className="bg-gradient-to-r from-[#fad258] to-[#f3ba2f] h-4 rounded-full" 
-            style={{ width: `${(energy / 6500) * 100}%` }}
-          ></div>
+        <div className="w-full bg-white/20 h-4 rounded-full overflow-hidden">
+          <div className="bg-white h-full transition-all" style={{ width: `${(energy/6500)*100}%` }}></div>
         </div>
       </div>
-
     </div>
   );
 }
