@@ -45,8 +45,10 @@ function App() {
     return () => clearInterval(interval);
   }, [energy]);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (energy <= 0) return;
+    
+    // ئەڤ پارچە دێ هێلیت ژمارە ڕێک د جهێ کلیکێ دا بلند ببن
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -69,7 +71,7 @@ function App() {
 
   return (
     <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center">
-      <div className="mt-8 text-center">
+      <div className="mt-8 text-center z-20">
         <div className="text-5xl font-bold flex items-center justify-center text-white">
           <img src={coin} width={40} alt="coin" />
           <span className="ml-2">{points.toLocaleString()}</span>
@@ -78,14 +80,15 @@ function App() {
           <img src={trophy} width={18} alt="rank" />
           <span className="ml-1">
             {points > 20000 ? "Gold" : points > 5000 ? "Silver" : "Bronze"} Rank
-            <img src={rocket} width={18} className="inline ml-2" alt="rocket" />
+            {isBoost && <img src={rocket} width={18} className="inline ml-2" alt="rocket" />}
           </span>
         </div>
       </div>
 
       <div className="flex-grow flex items-center justify-center w-full relative">
+        {/* گرنگە کلاسا relative ل ڤێرە هەبیت بۆ هندێ ژمارە بەرزە نەبن */}
         <div className="relative cursor-pointer" onClick={handleClick}>
-          <img src={onecoin} width={220} className="coin-animation" alt="main" />
+          <img src={onecoin} width={220} className="coin-animation select-none" alt="main" />
           {clicks.map(click => (
             <div
               key={click.id}
@@ -99,7 +102,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex gap-4 mb-24 z-10">
+      <div className="flex gap-4 mb-24 z-20">
         <button onClick={buyAuto} className="btn-shop">
           🤖 Auto (+{autoLevel})
         </button>
@@ -111,13 +114,13 @@ function App() {
         </button>
       </div>
 
-      <div className="fixed bottom-6 w-full px-8 text-white">
+      <div className="fixed bottom-6 w-full px-8 text-white z-20">
         <div className="flex items-center mb-2">
           <img src={highVoltage} width={25} alt="energy" />
           <span className="ml-2 font-bold">{energy} / 6500</span>
         </div>
         <div className="w-full bg-white/20 h-3 rounded-full overflow-hidden">
-          <div className="bg-white h-full transition-all" style={{ width: `${(energy/6500)*100}%` }}></div>
+          <div className="bg-white h-full transition-all" style={{ width: `${(energy/6500) * 100}%` }}></div>
         </div>
       </div>
     </div>
