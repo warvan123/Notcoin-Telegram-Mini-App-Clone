@@ -53,66 +53,89 @@ function App() {
     setClicks([...clicks, { id: Date.now(), x, y }]);
   };
 
+  const handleTask = (id: number, reward: number, link: string) => {
+    window.open(link, '_blank');
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, claimed: true } : t));
+    setPoints(p => p + reward);
+  };
+
   return (
-    <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none text-white font-sans">
+    <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none text-white">
       
-      {/* نیشاندانی کۆینەکان لە هەموو بەشەکان */}
       <div className="mt-10 text-center z-20">
         <div className="text-5xl font-black flex items-center justify-center">
           <img src={coin} width={42} alt="coin" />
-          <span className="ml-2">{points.toLocaleString()}</span>
+          <span className="ml-2 font-mono">{points.toLocaleString()}</span>
+        </div>
+        <div className="flex items-center justify-center gap-2 mt-1 opacity-80">
+          <img src={trophy} width={18} alt="rank" /> {/* بەکارهێنانی trophy بۆ نەمانی ئیرۆر */}
+          <span className="font-bold">Bronze Rank</span>
         </div>
       </div>
 
-      {/* --- بەشی یاری --- */}
       {activeTab === 'game' && (
-        <div className="flex-grow flex flex-col items-center justify-center w-full">
-          <div className="relative coin-wrapper" onClick={handleClick}>
-            <img src={onecoin} width={250} className="main-coin" alt="clicker" />
-            {clicks.map(c => (
-              <div key={c.id} className="floating-num" style={{ left: c.x, top: c.y }} onAnimationEnd={() => setClicks(prev => prev.filter(cl => cl.id !== c.id))}>
-                +{isBoost ? 5 : 1}
-              </div>
-            ))}
+        <>
+          <div className="flex-grow flex items-center justify-center w-full relative">
+            <div className="coin-wrapper" onClick={handleClick}>
+              <img src={onecoin} width={250} className="main-coin" alt="clicker" />
+              {clicks.map(c => (
+                <div key={c.id} className="floating-num" style={{ left: c.x, top: c.y }} onAnimationEnd={() => setClicks(prev => prev.filter(cl => cl.id !== c.id))}>
+                  +{isBoost ? 5 : 1}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-4 mt-10 z-20">
+          <div className="flex gap-4 mb-36 z-20">
             <button onClick={() => points >= 100 && (setPoints(p=>p-100), setAutoLevel(a=>a+1))} className="btn-action">🤖 Auto (+{autoLevel})</button>
             <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action flex items-center gap-2 ${isBoost ? 'bg-orange-500 animate-pulse' : ''}`}>
-              <img src={rocket} width={20} alt="boost" /> Boost
+              <img src={rocket} width={20} alt="boost" /> Boost {/* بەکارهێنانی rocket بۆ نەمانی ئیرۆر */}
             </button>
+          </div>
+        </>
+      )}
+
+      {activeTab === 'tasks' && (
+        <div className="flex-grow w-full px-6 mt-10 overflow-y-auto pb-40">
+          <h2 className="text-2xl font-bold mb-6 text-center">Tasks List 💰</h2>
+          <div className="flex flex-col gap-4">
+            {tasks.map(t => (
+              <div key={t.id} className="task-card flex items-center justify-between p-4 bg-white/10 rounded-2xl border border-white/10">
+                <div className="flex items-center gap-4">
+                  <span className="text-3xl">{t.icon}</span>
+                  <div><p className="font-bold text-sm">{t.title}</p><p className="text-xs text-blue-300">+{t.reward.toLocaleString()}</p></div>
+                </div>
+                <button onClick={() => handleTask(t.id, t.reward, t.link)} disabled={t.claimed} className={`px-5 py-2 rounded-xl font-bold ${t.claimed ? 'bg-green-500/50' : 'bg-white text-blue-900'}`}>
+                  {t.claimed ? '✅ Done' : 'Go'}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* --- بەشی Wallet (نوێ) --- */}
-      {activeTab === 'wallet' && (
+      {activeTab === 'invite' && (
         <div className="flex-grow w-full px-6 flex flex-col items-center justify-center text-center pb-40">
-           <div className="mb-6 text-6xl">💰</div>
-           <h1 className="text-4xl font-black mb-2">Wallet</h1>
-           <p className="opacity-70 mb-10 text-lg">Connect your wallet to withdraw your rewards</p>
-           
+           <h1 className="text-4xl font-black mb-2">Invite Friends! 👥</h1>
+           <p className="opacity-70 mb-10 text-lg">Get 5,000 coins for each friend!</p>
            <div className="bg-white/10 p-8 w-full rounded-[35px] border border-white/20 backdrop-blur-md">
-              <div className="flex flex-col gap-4">
-                <div className="flex justify-between items-center bg-black/20 p-4 rounded-2xl">
-                  <span className="opacity-60">Balance:</span>
-                  <span className="font-bold text-yellow-400">{points.toLocaleString()} $ONE</span>
-                </div>
-                <button 
-                  onClick={() => alert("Wallet connection coming soon! 💎")}
-                  className="bg-blue-500 text-white font-black py-4 px-8 rounded-2xl w-full text-xl shadow-lg active:scale-95 transition-all"
-                >
-                  Connect TON Wallet
-                </button>
-              </div>
+              <code className="block bg-black/20 p-4 rounded-2xl mb-6 text-blue-300 text-sm italic">t.me/your_bot?start=user_id</code>
+              <button onClick={() => {navigator.clipboard.writeText("t.me/your_bot?start=user"); alert("Copied!");}} className="bg-white text-blue-700 font-black py-4 px-8 rounded-2xl w-full text-xl shadow-lg active:scale-95 transition-all">Copy Link</button>
            </div>
         </div>
       )}
 
-      {/* --- بەشەکانی تر (Tasks & Invite) وەک خۆیانن --- */}
-      {activeTab === 'tasks' && ( /* لێرە کۆدی تاسکەکان وەک پێشوو دادەنێیت */ <div className="p-10">Tasks Section...</div> )}
-      {activeTab === 'invite' && ( /* لێرە کۆدی ئینڤایت وەک پێشوو دادەنێیت */ <div className="p-10">Invite Section...</div> )}
+      {activeTab === 'wallet' && (
+        <div className="flex-grow w-full px-6 flex flex-col items-center justify-center text-center pb-40">
+           <div className="mb-6 text-6xl">💎</div>
+           <h1 className="text-4xl font-black mb-2">Wallet</h1>
+           <p className="opacity-70 mb-10 text-lg">Withdrawal coming soon!</p>
+           <div className="bg-white/10 p-6 w-full rounded-[25px] border border-white/10">
+              <p className="text-sm opacity-50 mb-4">Balance: {points.toLocaleString()} $ONE</p>
+              <button disabled className="bg-blue-600/50 text-white font-bold py-3 px-8 rounded-xl w-full">Connect Wallet</button>
+           </div>
+        </div>
+      )}
 
-      {/* Navigation Bar */}
       <div className="fixed bottom-0 w-full bg-black/40 backdrop-blur-xl flex justify-around items-center py-5 border-t border-white/10 z-50">
         <button onClick={() => setActiveTab('game')} className={`nav-btn ${activeTab === 'game' ? 'active text-blue-400' : 'opacity-50'}`}>🎮<span className="text-[10px] block font-bold">Game</span></button>
         <button onClick={() => setActiveTab('tasks')} className={`nav-btn ${activeTab === 'tasks' ? 'active text-blue-400' : 'opacity-50'}`}>📋<span className="text-[10px] block font-bold">Tasks</span></button>
