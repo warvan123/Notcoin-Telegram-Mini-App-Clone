@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { coin, highVoltage, onecoin, rocket, trophy } from './images';
 
-// پێناسا جۆرێ تاسکان بۆ نەمانا ئیرۆران
+// پێناسا جۆرێ تاسکان
 interface Task {
   id: number;
   title: string;
@@ -20,7 +20,7 @@ function App() {
   const [isBoost, setIsBoost] = useState(false);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
 
-  // بارکرنا تاسکان ژ زاکیرێ دا کو نەزەڤرنەڤە
+  // بارکردنی تاسکەکان بە شێوەیەک کە وێنەی 'rocket' بەکاربهێنێت بۆ ئەوەی ئیرۆر نەیەت
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('user_tasks');
     if (saved) return JSON.parse(saved);
@@ -44,7 +44,6 @@ function App() {
     ];
   });
 
-  // پاشکەوتکرنا داتایان
   useEffect(() => {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('energy', energy.toString());
@@ -52,7 +51,6 @@ function App() {
     localStorage.setItem('user_tasks', JSON.stringify(tasks));
   }, [points, energy, autoLevel, tasks]);
 
-  // ئۆتۆ-کلیک و نووکرنا وزەی
   useEffect(() => {
     const intv = setInterval(() => {
       if (autoLevel > 0) setPoints(p => p + autoLevel);
@@ -86,26 +84,24 @@ function App() {
   return (
     <div className="bg-gradient-main h-screen w-full overflow-hidden flex flex-col items-center select-none text-white font-sans">
       
-      {/* پۆینت ل سەرێ هەمی لاپەڕان */}
+      {/* پۆینت لە سەرەوە */}
       <div className="mt-10 text-center z-20">
-        <div className="text-5xl font-black flex items-center justify-center tracking-tighter">
+        <div className="text-5xl font-black flex items-center justify-center">
           <img src={coin} width={42} alt="coin" />
           <span className="ml-2">{points.toLocaleString()}</span>
         </div>
-        {activeTab === 'game' && (
-          <div className="flex items-center justify-center gap-2 mt-1 opacity-80">
-            <img src={trophy} width={18} alt="rank" />
-            <span className="font-bold">{points > 10000 ? "Silver" : "Bronze"} Rank</span>
-          </div>
-        )}
+        <div className="flex items-center justify-center gap-2 mt-1 opacity-80">
+          <img src={trophy} width={18} alt="rank" />
+          <span className="font-bold">Bronze Rank</span>
+        </div>
       </div>
 
-      {/* --- لاپەڕێ یاریێ --- */}
+      {/* --- بەشی یاری --- */}
       {activeTab === 'game' && (
         <>
           <div className="flex-grow flex items-center justify-center w-full relative">
             <div className="coin-wrapper" onClick={handleClick}>
-              <img src={onecoin} width={250} className="main-coin shadow-2xl" alt="clicker" />
+              <img src={onecoin} width={250} className="main-coin" alt="clicker" />
               {clicks.map(c => (
                 <div key={c.id} className="floating-num" style={{ left: c.x, top: c.y }} onAnimationEnd={() => setClicks(prev => prev.filter(cl => cl.id !== c.id))}>
                   +{isBoost ? 5 : 1}
@@ -115,12 +111,15 @@ function App() {
           </div>
           <div className="flex gap-4 mb-36 z-20">
             <button onClick={() => points >= 100 && (setPoints(p=>p-100), setAutoLevel(a=>a+1))} className="btn-action">🤖 Auto (+{autoLevel})</button>
-            <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action ${isBoost ? 'bg-orange-500 animate-pulse' : ''}`}>🚀 Boost</button>
+            {/* لێرە وێنەی rocket بەکاردەهێنین بۆ ئەوەی ئیرۆر نەیەت */}
+            <button onClick={() => {setIsBoost(true); setTimeout(()=>setIsBoost(false), 5000)}} className={`btn-action flex items-center gap-2 ${isBoost ? 'bg-orange-500 animate-pulse' : ''}`}>
+              <img src={rocket} width={20} alt="boost" /> Boost
+            </button>
           </div>
         </>
       )}
 
-      {/* --- لاپەڕێ تاسکان --- */}
+      {/* --- بەشی ئەرکەکان --- */}
       {activeTab === 'tasks' && (
         <div className="flex-grow w-full px-6 mt-10 overflow-y-auto pb-40">
           <h2 className="text-2xl font-bold mb-6 text-center">Tasks List 💰</h2>
@@ -134,8 +133,8 @@ function App() {
                     <p className="text-xs text-blue-300">+{t.reward.toLocaleString()}</p>
                   </div>
                 </div>
-                <button onClick={() => handleTask(t.id, t.reward, t.link)} disabled={t.claimed} className={`px-5 py-2 rounded-xl font-bold ${t.claimed ? 'bg-green-500/50' : 'bg-white text-blue-900'}`}>
-                  {t.claimed ? 'Done' : 'Go'}
+                <button onClick={() => handleTask(t.id, t.reward, t.link)} disabled={t.claimed} className={`px-5 py-2 rounded-xl font-bold ${t.claimed ? 'bg-green-500/50 text-white' : 'bg-white text-blue-900'}`}>
+                  {t.claimed ? '✅ Done' : 'Go'}
                 </button>
               </div>
             ))}
@@ -143,7 +142,7 @@ function App() {
         </div>
       )}
 
-      {/* --- لاپەڕێ ئینڤایت --- */}
+      {/* --- بەشی بانگهێشت --- */}
       {activeTab === 'invite' && (
         <div className="flex-grow w-full px-6 flex flex-col items-center justify-center text-center pb-40">
            <h1 className="text-4xl font-black mb-2">Invite Friends! 👥</h1>
@@ -157,21 +156,21 @@ function App() {
 
       {/* Navigation Bar */}
       <div className="fixed bottom-0 w-full bg-black/40 backdrop-blur-xl flex justify-around items-center py-5 border-t border-white/10 z-50">
-        <button onClick={() => setActiveTab('game')} className={`nav-btn ${activeTab === 'game' ? 'active text-blue-400' : 'opacity-50'}`}>🎮<span className="text-[10px] block">Game</span></button>
-        <button onClick={() => setActiveTab('tasks')} className={`nav-btn ${activeTab === 'tasks' ? 'active text-blue-400' : 'opacity-50'}`}>📋<span className="text-[10px] block">Tasks</span></button>
-        <button onClick={() => setActiveTab('invite')} className={`nav-btn ${activeTab === 'invite' ? 'active text-blue-400' : 'opacity-50'}`}>👥<span className="text-[10px] block">Invite</span></button>
-        <button className="nav-btn opacity-30">💰<span className="text-[10px] block">Wallet</span></button>
-        <button className="nav-btn opacity-30">📊<span className="text-[10px] block">Stats</span></button>
+        <button onClick={() => setActiveTab('game')} className={`nav-btn ${activeTab === 'game' ? 'active text-blue-400' : 'opacity-50'}`}>🎮<span className="text-[10px] block font-bold">Game</span></button>
+        <button onClick={() => setActiveTab('tasks')} className={`nav-btn ${activeTab === 'tasks' ? 'active text-blue-400' : 'opacity-50'}`}>📋<span className="text-[10px] block font-bold">Tasks</span></button>
+        <button onClick={() => setActiveTab('invite')} className={`nav-btn ${activeTab === 'invite' ? 'active text-blue-400' : 'opacity-50'}`}>👥<span className="text-[10px] block font-bold">Invite</span></button>
+        <button className="nav-btn opacity-30 text-xs">💰Wallet</button>
+        <button className="nav-btn opacity-30 text-xs">📊Stats</button>
       </div>
 
-      {/* بارا وزەی */}
+      {/* باری وزە */}
       {activeTab === 'game' && (
         <div className="fixed bottom-28 w-full px-10">
           <div className="flex items-center mb-2 text-xs font-bold">
             <img src={highVoltage} width={14} alt="energy" /> <span className="ml-1">{energy} / 6500</span>
           </div>
           <div className="w-full bg-black/30 h-2.5 rounded-full border border-white/10 overflow-hidden shadow-inner">
-            <div className="bg-white h-full transition-all duration-300 shadow-[0_0_10px_white]" style={{ width: `${(energy/6500) * 100}%` }}></div>
+            <div className="bg-white h-full transition-all duration-300" style={{ width: `${(energy/6500) * 100}%` }}></div>
           </div>
         </div>
       )}
