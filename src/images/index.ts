@@ -9,7 +9,7 @@ export {
     bear,
     coin,
     highVoltage,
-    notcoin,
+    onecoin,
     rocket,
     trophy
 }
