@@ -1,58 +1,66 @@
 /* App.css */
-body, html {
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* ناهێلیت پەیج بجوولیت */
-  background-color: #f3ba2f; /* ڕەنگێ زەرد */
-  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.App {
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #f3ba2f; /* ڕەنگێ زەردێ یاریێ */
+  position: fixed;
+}
+
+.main-container {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 40px 0;
-  user-select: none;
 }
 
-.score-container {
+.score-box {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.score-text {
-  font-size: 48px;
-  color: white;
-  margin: 0;
-}
+.score-coin { width: 40px; height: 40px; }
+.score-val { font-size: 3rem; font-weight: 800; color: white; }
+.rank-tag { color: white; font-weight: bold; margin-top: 5px; text-align: center;}
 
-.coin-wrapper {
+.click-area {
   position: relative;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.main-coin-img {
+.big-coin {
   width: 280px;
-  transition: transform 0.1s;
+  cursor: pointer;
+  transition: transform 0.05s;
 }
 
-.main-coin-img:active {
+.big-coin:active {
   transform: scale(0.92);
 }
 
-/* ئەڤە چارەسەریا پڵەس وەنە */
-.plus-one-float {
-  position: fixed; /* ئەڤە ناهێلیت وێنە بجوولیت */
+.plus-one {
+  position: fixed; /* ئەڤە وادکەت وێنە تێک نەچیت */
   color: white;
   font-size: 32px;
   font-weight: bold;
   pointer-events: none;
-  animation: floatUp 0.8s ease-out forwards;
+  animation: floatUp 0.7s ease-out forwards;
 }
 
 @keyframes floatUp {
@@ -60,16 +68,9 @@ body, html {
   100% { opacity: 0; transform: translate(-50%, -150px); }
 }
 
-.progress-bg {
-  width: 90%;
-  height: 12px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 10px;
-  margin: 10px auto;
-}
-
-.progress-fill {
-  height: 100%;
-  background: white;
-  border-radius: 10px;
-}
+.bottom-ui { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.stats { color: white; font-weight: bold; }
+.progress-bar { width: 90%; height: 12px; background: rgba(255,255,255,0.3); border-radius: 10px; }
+.progress-fill { height: 100%; background: white; border-radius: 10px; }
+.action-btns { display: flex; gap: 20px; }
+.btn { background: rgba(255,255,255,0.2); border: none; padding: 10px 20px; border-radius: 12px; color: white; font-weight: bold; }
