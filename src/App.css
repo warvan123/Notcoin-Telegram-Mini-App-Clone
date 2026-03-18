@@ -1,68 +1,65 @@
 /* --- App.css --- */
 
-/* ڕێکخستنی بنەڕەتی بۆ هەموو لاپەڕەکە */
+/* ڕێکخستنی سەرەکی بۆ ئەوەی هیچ شتێک نەجوڵێت */
 .App {
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 100vh;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background-color: #121212; /* ڕەنگی پشتێنەی تاریکی مۆدێرن */
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
+  background-color: #f3ba2f; /* ئەو ڕەنگە زەردەی لە وێنەکەدا هەیە */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ستایلی سەرەکی بۆ نووسینەکان */
-h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  color: #00d4ff; /* ڕەنگی شینێکی گەش */
+/* شوێنی کۆینەکە جێگیر بکە */
+.coin-wrapper {
+  position: relative;
+  margin-top: 100px; /* بەپێی ویست بیگۆڕە */
+  z-index: 2;
 }
 
-p {
-  font-size: 1.2rem;
-  color: #b0b0b0;
-  margin-bottom: 30px;
-}
-
-/* --- ستایلی دوگمەکە (Button Style) --- */
-.custom-button {
-  background: linear-gradient(135deg, #007bff, #00d4ff); /* ڕەنگی پلەدار (Gradient) */
-  color: white;
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 12px; /* قەراغەکان بە جوانی خڕ دەکات */
+.coin-image {
+  width: 250px; /* قەبارەی کۆینەکە */
+  height: auto;
+  pointer-events: auto;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* سێبەرێکی نەرم */
-  transition: all 0.3s ease; /* بۆ ئەوەی گۆڕانکارییەکان نەرم بن */
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  transition: transform 0.1s active;
 }
 
-/* کاتێک ماوس دەچێتە سەر دوگمەکە */
-.custom-button:hover {
-  transform: translateY(-3px); /* کەمێک بەرز دەبێتەوە */
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5); /* سێبەرەکەی بەهێزتر دەبێت */
-  filter: brightness(1.1); /* کەمێک ڕووناکتر دەبێتەوە */
+.coin-image:active {
+  transform: scale(0.95); /* تەنها کەمێک بچووک دەبێتەوە بێ ئەوەی بجوڵێت */
 }
 
-/* کاتێک پەستان لەسەر دوگمەکە دەکەیت */
-.custom-button:active {
-  transform: translateY(1px); /* هەستێکی ڕاستەقینەی پەستانت پێ دەدات */
+/* --- چارەسەری کێشەی +1 --- */
+/* ئەم بەشە زۆر گرنگە بۆ ئەوەی +1 لاپەڕەکە تێکنەدات */
+.plus-one {
+  position: absolute; /* وادەکات دەقەکە سەربەخۆ بێت و هیچ شتێک پاڵ نەنێت */
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  pointer-events: none; /* وادەکات ڕێگری لە کلیک کردن نەکات */
+  animation: floatUp 1s ease-out forwards; /* ئەنیمەیشن بۆ سەرەوە */
+  z-index: 10;
 }
 
-/* ڕێکخستن بۆ شاشەی مۆبایل */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2rem;
+/* ئەنیمەیشنی سەرکەوتنی ژمارەکان */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .custom-button {
-    width: 80%;
-    padding: 12px;
+  100% {
+    opacity: 0;
+    transform: translateY(-100px); /* بەرەو سەرەوە دەڕوات و ون دەبێت */
   }
+}
+
+/* ستایلی ئەو بارەی خوارەوە (Progress Bar) */
+.progress-container {
+  position: absolute;
+  bottom: 100px;
+  width: 90%;
 }
